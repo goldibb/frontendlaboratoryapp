@@ -1,5 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "./components/Header";
+import PrelineScript from "./components/PrelineScript";
+import Footer from "./components/Footer";
+import SideMenu from "./components/SideMenu";
+import { AuthProvider } from "@/app//lib/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,9 +25,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-neutral-900`}
       >
-        {children}
+        <div className="flex h-screen overflow-hidden">
+          <SideMenu />
+          <div className="flex flex-col flex-1 w-0 overflow-hidden">
+            <Header />
+            <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+              <AuthProvider>{children}</AuthProvider>
+            </main>
+            <Footer />
+          </div>
+        </div>
+        <PrelineScript />
       </body>
     </html>
   );
