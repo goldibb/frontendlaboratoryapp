@@ -1,6 +1,16 @@
+"use client";
+
 import React from "react";
+import LogoutModal from "./LogoutModal";
 
 export default function SideMenu() {
+  const handleLogout = () => {
+    const modal = document.querySelector("#hs-sign-out-alert");
+    if (window.HSOverlay && modal) {
+      window.HSOverlay.open(modal);
+    }
+  };
+
   return (
     <div className="flex h-screen w-16 flex-col justify-between border-e border-gray-200 bg-white dark:bg-neutral-800 dark:border-neutral-700">
       <div>
@@ -153,8 +163,10 @@ export default function SideMenu() {
       </div>
 
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-200 bg-white p-2 dark:bg-neutral-800 dark:border-neutral-700">
-        <a
-          href="#"
+        <button
+          type="button"
+          onClick={handleLogout}
+          data-hs-overlay="#hs-sign-out-alert"
           className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
         >
           <svg
@@ -175,8 +187,9 @@ export default function SideMenu() {
           <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible dark:bg-neutral-700">
             Logout
           </span>
-        </a>
+        </button>
       </div>
+      <LogoutModal />
     </div>
   );
 }

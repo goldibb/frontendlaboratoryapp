@@ -1,12 +1,69 @@
-import React from "react";
+"use client";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
+} from "firebase/auth";
+import { useAuth } from "@/app/lib/AuthContext";
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import FailureAlert from "@/app/components/FailureAlert";
 
 export default function RegisterPage() {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  if (user) {
+    return null;
+  }
+
+  const auth = getAuth();
+
+  const [registerError, setRegisterError] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirm-password");
+
+    if (password !== confirmPassword) {
+      setRegisterError("Passwords do not match");
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log("User registered!");
+        sendEmailVerification(auth.currentUser).then(() => {
+          console.log("Email verification send!");
+          router.push("/user/verify");
+        });
+      })
+      .catch((error) => {
+        if (error.code === "auth/email-already-in-use") {
+          setRegisterError("This email is already registered. Please sign in.");
+        } else {
+          setRegisterError(error.message);
+        }
+        console.dir(error);
+      });
+  };
+
   return (
     <div className="flex h-full items-center justify-center">
       <div className="w-full max-w-md bg-white border border-gray-200 rounded-xl shadow-2xs dark:bg-neutral-900 dark:border-neutral-700">
         <div className="p-4 sm:p-7">
           <div className="text-center">
+            {registerError && (
+              <div className="mb-4 text-left">
+                <FailureAlert message={registerError} />
+              </div>
+            )}
             <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
               Sign up
             </h1>
@@ -22,7 +79,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Form */}
-          <form>
+          <form onSubmit={onSubmit}>
             <div className="grid gap-y-4">
               {/* Form Group */}
               <div>

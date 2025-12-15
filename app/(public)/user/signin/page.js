@@ -29,6 +29,11 @@ export default function SignInPage() {
       .then(() => {
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
+            if (!userCredential.user.emailVerified) {
+              router.push("/user/verify");
+              return;
+            }
+
             const returnUrlParam = params.get("returnUrl");
             if (!returnUrlParam) {
               router.push("/");
