@@ -29,7 +29,6 @@ export default function SignInPage() {
       .then(() => {
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
-            // Zadanie 8: Check if returnUrl param exists, if not push to main path
             const returnUrlParam = params.get("returnUrl");
             if (!returnUrlParam) {
               router.push("/");
@@ -65,26 +64,12 @@ export default function SignInPage() {
           </div>
 
           {/* Form */}
-import FailureAlert from "@/app/components/FailureAlert";
-
-export default function SignInPage() {
-  const auth = getAuth(app);
-  const params = useSearchParams();
-  const router = useRouter();
-  // const returnUrl = params.get("returnUrl") || "/"; // Logic moved to onSubmit
-
-  const [error, setError] = React.useState("");
-// ... (onSubmit function is handled by other tool call, we rely on the line numbers to be correct or use logic to insert)
-// Wait, I am replacing lines 1-something? No.
-// I need to be careful with overlapping edits if I do multiple replaces.
-// In this tool call I am targeting the IMPORT and the JSX.
-// But I can't easily target the import without knowing where exactly to put it if I don't see the top.
-// I see lines 1-13 in previous view.
-// I will just do the JSX insertion here.
-// Actually, `FailureAlert` import needs to be at the top.
-// I will split this into two chunks in one call? No, replace_file_content only does single contiguous.
-// I will use multi_replace for this file then.
-
+          {error && (
+            <div className="mb-4">
+              <FailureAlert message={error} />
+            </div>
+          )}
+          <form onSubmit={onSubmit}>
             <div className="grid gap-y-4">
               {/* Form Group */}
               <div>

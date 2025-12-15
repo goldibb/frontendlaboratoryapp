@@ -1,7 +1,10 @@
-import React from "react";
+"use client";
+
 import Link from "next/link";
+import { useAuth } from "../lib/AuthContext";
 
 export default function Header() {
+  const { user } = useAuth();
   return (
     <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white border-b border-gray-200 dark:bg-neutral-800 dark:border-neutral-700">
       <nav className="relative max-w-[85rem] w-full mx-auto md:flex md:items-center md:justify-between md:gap-3 py-2 px-4 sm:px-6 lg:px-8">
@@ -301,19 +304,27 @@ export default function Header() {
               </div>
 
               {/* Button Group */}
-              <div className=" flex flex-wrap items-center gap-x-1.5">
-                <Link
-                  className="py-[7px] px-2.5 inline-flex items-center font-medium text-sm rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 focus:outline-hidden focus:bg-gray-100 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                  href="/user/signin"
-                >
-                  Sign in
-                </Link>
-                <Link
-                  className="py-2 px-2.5 inline-flex items-center font-medium text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:bg-blue-600"
-                  href="/user/register"
-                >
-                  Get started
-                </Link>
+              <div className="flex flex-wrap items-center gap-x-1.5">
+                {user ? (
+                  <div className="flex items-center justify-center size-[38px] rounded-full bg-gray-500 text-white text-sm font-semibold shadow-sm">
+                    {user.email?.charAt(0).toUpperCase()}
+                  </div>
+                ) : (
+                  <>
+                    <Link
+                      className="py-[7px] px-2.5 inline-flex items-center font-medium text-sm rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 focus:outline-hidden focus:bg-gray-100 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                      href="/user/signin"
+                    >
+                      Sign in
+                    </Link>
+                    <Link
+                      className="py-2 px-2.5 inline-flex items-center font-medium text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:bg-blue-600"
+                      href="/user/register"
+                    >
+                      Get started
+                    </Link>
+                  </>
+                )}
               </div>
               {/* End Button Group */}
             </div>

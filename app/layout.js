@@ -27,16 +27,18 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-neutral-900`}
       >
-        <div className="flex h-screen overflow-hidden">
-          <SideMenu />
-          <div className="flex flex-col flex-1 w-0 overflow-hidden">
-            <Header />
-            <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-              <AuthProvider>{children}</AuthProvider>
-            </main>
-            <Footer />
+        <AuthProvider>
+          <div className="flex h-screen overflow-hidden">
+            <SideMenu />
+            <div className="flex flex-col flex-1 w-0 overflow-hidden">
+              <Header />
+              <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+                {children}
+              </main>
+              <Footer />
+            </div>
           </div>
-        </div>
+        </AuthProvider>
         <PrelineScript />
       </body>
     </html>
